@@ -6,7 +6,7 @@ Juego tetris
 
 ### **Laboratorio**
 
-![Arduino](https://github.com/magikboy/Parcial-1/blob/30c7b791849ce1d70de15ec52cb6a92ac3aec450/ArduinoTinkercad.jpg)
+![TETRIS](https://github.com/magikboy/parcial-1-labo/blob/5feeefcec0e5d43faea89a4e8e41ba442be24bd4/maxresdefault.jpg)
 
 ### VIDEOJUEGO TETRIS 🎮
 
