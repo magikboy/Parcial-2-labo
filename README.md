@@ -557,10 +557,13 @@ La función **todos()** enciende todos los segmentos del display, lo que resulta
 
 La función **actualizarDisplay()** se utiliza para mostrar el número del piso en el que se encuentra un elevador, por ejemplo. Se utiliza un switch para seleccionar el número del piso y luego se llama a esta función para actualizar el display con el número correspondiente. La función toma como argumento el número del piso y utiliza los comandos digitalWrite() para encender los segmentos necesarios para mostrar el número en el display.
 
-``` C++
+### 🧠Posicionamiento de los bloques en las celdas
 
-}
-
+``` py
+class Posicion:
+    def __init__(self, fila, columna):
+        self.fila = fila
+        self.columna = columna
 ```
 
 La función **setup()** es una función que se ejecuta una sola vez al inicio del programa. En ella se inicializan los pines que se van a utilizar como entradas o salidas, y se establece la velocidad de comunicación para la interfaz serial (Serial.begin(9600)). Además, se llama a la función mostrarPiso() para que muestre el piso en el que se encuentra el montacargas en ese momento.
