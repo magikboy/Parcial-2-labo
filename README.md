@@ -60,7 +60,7 @@ Incluir.
 
 ### Juego en funcionamiento 🎮
 
-![juego](https://github.com/magikboy/parcial-1-labo/blob/56990df6e0120d70935ff2848bdda6e4989ca2a9/2023-06-19-00-38-24.gif)
+![juego](https://github.com/magikboy/parcial-1-labo/blob/87a4a8c16ee519fa5bf10b87d742671d097eeb67/2023-06-19-00-42-24.gif)
 
 
 ### 🚀ejercutable del proyecto y menus
