@@ -340,6 +340,45 @@ while True:
 
 }
 ```
+
+Importaciones:
+
+〰Se importan los módulos necesarios, como pygame, sys, sqlite3, juego, colores y time. Estos módulos proporcionan funcionalidades para crear el juego, interactuar con la base de datos y manejar el tiempo.
+Conexión a la base de datos:
+
+〰Se establece una conexión a una base de datos SQLite utilizando el módulo sqlite3. Si la base de datos no existe, se crea una nueva.
+Se define una tabla llamada "scores" que tiene columnas para el ID del puntaje, el nombre de usuario y el puntaje en sí.
+Funciones para manipular la base de datos:
+
+〰insert_score: Esta función se utiliza para insertar una puntuación en la base de datos. Verifica si el nombre de usuario ya existe y si la nueva puntuación es mayor. Si el nombre de usuario no existe, se inserta una nueva fila en la tabla; de lo contrario, se actualiza la puntuación existente.
+get_top_score_user: Esta función devuelve el usuario con el puntaje máximo en la base de datos.
+Inicialización de Pygame:
+
+〰Se inicializa la biblioteca Pygame llamando a la función pygame.init().
+Se definen las dimensiones de la ventana del juego.
+Carga de recursos:
+
+〰Se cargan y redimensionan las imágenes de fondo utilizadas en el juego.
+Se crea una instancia del juego utilizando la clase Juego.
+Ventana de ingreso de nombre:
+
+〰Antes de mostrar el menú, se muestra una ventana para que el jugador ingrese su nombre. El nombre se almacena en la variable nombre_jugador.
+Bucle principal del juego:
+
+〰El juego se ejecuta dentro de un bucle infinito.
+	Se manejan los eventos, como presionar teclas o cerrar la ventana.
+	Dependiendo del evento, se realizan acciones como mover la pieza, rotarla, actualizar el juego, etc.
+	Se dibujan los elementos del juego en la pantalla, como el fondo, el puntaje, el tiempo, la próxima pieza, etc.
+	La pantalla se actualiza y se establece la velocidad de fotogramas utilizando el reloj de Pygame.
+〰Funciones adicionales:
+
+〰mostrar_menu: Esta función muestra el menú principal del juego, donde el jugador puede elegir entre iniciar el juego, ver la tabla de puntuaciones o salir.
+〰mostrar_tabla_puntuaciones: Esta función muestra la tabla de puntuaciones obtenidas de la base de datos. Se muestran los mejores puntajes y los nombres de usuario correspondientes.
+〰mostrar_ventana_nombre: Esta función muestra una ventana donde el jugador puede ingresar su nombre antes de comenzar el juego.
+
+
+
+
 ### 🤖Menu principal
 ![MENU PRINCIPAL](https://github.com/magikboy/parcial-1-labo/blob/808cd1a859e4195102cf4a7dd3dc5d2a04a5baa1/menu1.PNG)
 
