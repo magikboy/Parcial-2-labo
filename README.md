@@ -1,5 +1,4 @@
 # parcial-1-labo
-Juego tetris
 ### 📄Documentación de la Laboratorio - UTN Tecnicatura Superior en Programación.
 
 ### Nombre: Bosco Mascaro Massimo Ariel
