@@ -342,9 +342,15 @@ while True:
 
 ### 🤖Menu de scores
 
+![MENU SCORES](https://github.com/magikboy/parcial-1-labo/blob/faea3a0c5b3661aa432da058582056839d88fa45/menu2.PNG)
+
 ### 🤖Menu de ingreso de nombre
 
+![MENU NOMBRE](https://github.com/magikboy/parcial-1-labo/blob/faea3a0c5b3661aa432da058582056839d88fa45/menu3.PNG)
+
 ### 🤖Juego en funcionamiento
+
+![JUEGO](https://github.com/magikboy/parcial-1-labo/blob/faea3a0c5b3661aa432da058582056839d88fa45/menu4.PNG)
 
 ### 🧠GRILLA DEL JUEGO
 
