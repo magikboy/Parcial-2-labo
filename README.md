@@ -340,7 +340,7 @@ while True:
 
 }
 ```
-
+### 🧠Explicacion
 Importaciones:
 
 〰Se importan los módulos necesarios, como pygame, sys, sqlite3, juego, colores y time. Estos módulos proporcionan funcionalidades para crear el juego, interactuar con la base de datos y manejar el tiempo.
@@ -373,10 +373,10 @@ Bucle principal del juego:
 〰Funciones adicionales:
 
 〰mostrar_menu: Esta función muestra el menú principal del juego, donde el jugador puede elegir entre iniciar el juego, ver la tabla de puntuaciones o salir.
+
 〰mostrar_tabla_puntuaciones: Esta función muestra la tabla de puntuaciones obtenidas de la base de datos. Se muestran los mejores puntajes y los nombres de usuario correspondientes.
+
 〰mostrar_ventana_nombre: Esta función muestra una ventana donde el jugador puede ingresar su nombre antes de comenzar el juego.
-
-
 
 
 ### 🤖Menu principal
