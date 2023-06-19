@@ -1,10 +1,10 @@
 # parcial-1-labo
 Juego tetris
-### 📄Documentación de la parte práctica del primer parcial para la materia Sistemas de procesamiento de datos - UTN Tecnicatura Superior en Programación.
+### 📄Documentación de la Laboratorio - UTN Tecnicatura Superior en Programación.
 
 ### Nombre: Bosco Mascaro Massimo Ariel
 
-### **Sistema de Procesamiento de Datos (SPD)**
+### **Laboratorio**
 
 ![Arduino](https://github.com/magikboy/Parcial-1/blob/30c7b791849ce1d70de15ec52cb6a92ac3aec450/ArduinoTinkercad.jpg)
 
@@ -21,363 +21,281 @@ objetivo es que implementes un sistema que pueda recibir ordenes de subir, bajar
 desde diferentes pisos y muestre el estado actual del montacargas en el display 7 segmentos.
 
 ### 🚀Codigo del proyecto
-``` C++
-#define BOTON_SUBIR 2
-#define BOTON_BAJAR 3
-#define BOTON_PAUSAR 4
-#define led_Verde 5
-#define led_Rojo 6
-#define A 7
-#define B 8
-#define C 9
-#define D 10
-#define E 11
-#define F 12
-#define G 13
-const int TIEMPO_ESPERA_BOTON = 10; // Tiempo de espera entre lecturas de botones en milisegundos.
-const int TIEMPO_POR_PISO = 3000; // Tiempo que tarda el montacargas en llegar a cada piso en milisegundos.
-const int TIEMPO_ESPERA_MOVIMIENTO = 3000; // Tiempo de espera después de que se mueve el montacargas en milisegundos.
+``` py
+import pygame
+import sys
+import sqlite3
+from juego import Juego
+from colores import Colores
+import time
 
-boolean botonSubir = false;
-boolean botonBajar = false;
-boolean botonPausa = false;
+# Conectar a la base de datos (se creará si no existe)
+conn = sqlite3.connect('puntuacion\dtetris_scores.db')
 
-int contador = 0; //INICIALIZO EL CONTADOR EN 0
-String mensaje = ""; //PARA PODER ESCRIBIR EN EL MONITOR
+# Crear la tabla de puntuaciones si no existe
+conn.execute('''CREATE TABLE IF NOT EXISTS scores
+                (id INTEGER PRIMARY KEY AUTOINCREMENT,
+                username TEXT,
+                score INTEGER)''')
 
-const char* mensajesPisos[] = {
-  "Llego al piso 0.",
-  "Llego al piso 1.",
-  "Llego al piso 2.",
-  "Llego al piso 3.",
-  "Llego al piso 4.",
-  "Llego al piso 5.",
-  "Llego al piso 6.",
-  "Llego al piso 7.",
-  "Llego al piso 8.",
-  "Llego al piso 9."
-};
+# Función para insertar una puntuación en la base de datos
+def insert_score(username, score):
+    # Verificar si el nombre del jugador ya existe en la base de datos
+    cursor = conn.execute("SELECT score FROM scores WHERE username = ?", (username,))
+    existing_score = cursor.fetchone()
 
-void mostrarPiso(int piso) {
-switch(piso) {
-  case 0:
-  	cero(1);
-  	break;
-  case 1:
-  	uno(1);
-  	break;
-  case 2:
-    dos(1);
-    break;
-  case 3:
-    tres(1);
-    break;
-  case 4:
-    cuatro(1);
-    break;
-  case 5:
-    cinco(1);
-    break;
-  case 6:
-    seis(1);
-    break;
-  case 7:
-    siete(1);
-    break;
-  case 8:
-    ocho(1);
-    break;
-  case 9:
-    nueve(1);
-    break;
-}
-mensaje = mensajesPisos[piso];
-}
+    if existing_score is None or score > existing_score[0]:
+        # El nombre del jugador no existe o la nueva puntuación es mayor
+        if existing_score is None:
+            # Insertar una nueva fila en la tabla
+            conn.execute("INSERT INTO scores (username, score) VALUES (?, ?)", (username, score))
+        else:
+            # Actualizar la puntuación existente
+            conn.execute("UPDATE scores SET score = ? WHERE username = ?", (score, username))
+        conn.commit()
 
-void cambiarPiso(String direccion) {
-  if (direccion == "subir" && contador < 9) {
-    contador++;
-  }
-  else if (direccion == "bajar" && contador > 0) {
-    contador--;
-  }
-}
+# Función para obtener el usuario con el puntaje máximo
+def get_top_score_user():
+    cursor = conn.execute("SELECT username, MAX(score) FROM scores")
+    return cursor.fetchone()
 
-int moverPiso(String subirBajar, int tiempoDelay)
-{
-  digitalWrite(led_Rojo, 0);
-  cambiarPiso(subirBajar);
-  mostrarPiso(contador);
-  digitalWrite(led_Verde, 1);
-  delay(tiempoDelay);
-  digitalWrite(led_Verde , 0);
-  displayOff();
-  Serial.println(mensaje);
-  return contador;
-}
+# Inicializar Pygame
+pygame.init()
 
-// FUNCIONES
-void displayOff() // Apago display al salir del switch
-{
-  digitalWrite(A, LOW);
-  digitalWrite(B, LOW);
-  digitalWrite(C, LOW);
-  digitalWrite(D, LOW);
-  digitalWrite(E, LOW);
-  digitalWrite(F, LOW);
-  digitalWrite(G, LOW);
-}
+# Dimensiones de la ventana del juego
+ALTO = 620
+ANCHO = 500
 
-void cero(int on)
-{
-  digitalWrite(A, HIGH);
-  digitalWrite(B, HIGH);
-  digitalWrite(C, HIGH);
-  digitalWrite(D, HIGH);
-  digitalWrite(E, HIGH);
-  digitalWrite(F, HIGH);
-  digitalWrite(G, LOW);
-}
+# Fuente para el título
+font_titulo = pygame.font.Font("font\dfont.ttf", 25)
 
-void uno(int on)
-{
-  digitalWrite(A, LOW);
-  digitalWrite(B, HIGH);
-  digitalWrite(C, HIGH);
-  digitalWrite(D, LOW);
-  digitalWrite(E, LOW);
-  digitalWrite(F, LOW);
-  digitalWrite(G, LOW);
-}
+# Superficies de texto para mostrar en la pantalla
+superficie_puntaje = font_titulo.render("Puntaje", True, Colores.blanco)
+superficie_siguiente = font_titulo.render("Siguiente", True, Colores.blanco)
+superficie_fin_juego = font_titulo.render("GAME OVER", True, Colores.rojo)
+superficie_opcion_jugar = font_titulo.render("Iniciar juego", True, Colores.blanco)
+superficie_opcion_puntuaciones = font_titulo.render("Puntuaciones", True, Colores.blanco)
+superficie_opcion_salir = font_titulo.render("Salir", True, Colores.blanco)
+opcion_salir = font_titulo.render("Esc para salir", True, Colores.blanco)
+opcion_continuar = font_titulo.render("Esp para reiniciar", True, Colores.blanco)
+mejor_punt = font_titulo.render("Mejor:", True, Colores.blanco)
 
-void dos(int on)
-{
-  digitalWrite(A, HIGH);
-  digitalWrite(B, HIGH);
-  digitalWrite(C, LOW);
-  digitalWrite(D, HIGH);
-  digitalWrite(E, HIGH);
-  digitalWrite(F, LOW);
-  digitalWrite(G, HIGH);
-}
+# Rectángulos para los elementos en la pantalla
+rect_puntaje = pygame.Rect(330, 55, 150, 60)
+rect_siguiente = pygame.Rect(330, 215, 150, 180)
 
-void tres(int on)
-{
-  digitalWrite(A, HIGH);
-  digitalWrite(B, HIGH);
-  digitalWrite(C, HIGH);
-  digitalWrite(D, HIGH);
-  digitalWrite(E, LOW);
-  digitalWrite(F, LOW);
-  digitalWrite(G, HIGH);
-}
+# Crear la ventana del juego
+pantalla = pygame.display.set_mode((ANCHO, ALTO))
+pygame.display.set_caption("Segundo Parcial: Tetris")
 
-void cuatro(int on)
-{
-  digitalWrite(A, LOW);
-  digitalWrite(B, HIGH);
-  digitalWrite(C, HIGH);
-  digitalWrite(D, LOW);
-  digitalWrite(E, LOW);
-  digitalWrite(F, HIGH);
-  digitalWrite(G, HIGH);
-}
+# Cargar y redimensionar el fondo de pantalla
+fondo = pygame.image.load("fondo\dfondo4.png").convert()
+fondo = pygame.transform.scale(fondo, (ANCHO, ALTO))
 
-void cinco(int on)
-{
-  digitalWrite(A, HIGH);
-  digitalWrite(B, LOW);
-  digitalWrite(C, HIGH);
-  digitalWrite(D, HIGH);
-  digitalWrite(E, LOW);
-  digitalWrite(F, HIGH);
-  digitalWrite(G, HIGH);
-}
+# Establecer el reloj para limitar la velocidad de actualización de la pantalla
+reloj = pygame.time.Clock()
 
-void seis(int on)
-{
-  digitalWrite(A, HIGH);
-  digitalWrite(B, LOW);
-  digitalWrite(C, HIGH);
-  digitalWrite(D, HIGH);
-  digitalWrite(E, HIGH);
-  digitalWrite(F, HIGH);
-  digitalWrite(G, HIGH);
-}
+# Crear una instancia del juego
+juego = Juego()
 
-void siete(int on)
-{
-  digitalWrite(A, HIGH);
-  digitalWrite(B, HIGH);
-  digitalWrite(C, HIGH);
-  digitalWrite(D, LOW);
-  digitalWrite(E, LOW);
-  digitalWrite(F, LOW);
-  digitalWrite(G, LOW);
-}
+# Obtener el nombre del jugador
+nombre_jugador = ""
 
-void ocho(int on)
-{
-  digitalWrite(A, HIGH);
-  digitalWrite(B, HIGH);
-  digitalWrite(C, HIGH);
-  digitalWrite(D, HIGH);
-  digitalWrite(E, HIGH);
-  digitalWrite(F, HIGH);
-  digitalWrite(G, HIGH);
-}
+# Función para mostrar la ventana de ingreso de nombre
+def mostrar_ventana_nombre():
+    global nombre_jugador
+    fondo = pygame.image.load("fondo\dnombre1.png").convert()
+    fondo = pygame.transform.scale(fondo, (ANCHO, ALTO))
+    nombre_ingresado = False
 
-void nueve(int on)
-{
-  digitalWrite(A, HIGH);
-  digitalWrite(B, HIGH);
-  digitalWrite(C, HIGH);
-  digitalWrite(D, HIGH);
-  digitalWrite(E, LOW);
-  digitalWrite(F, HIGH);
-  digitalWrite(G, HIGH);
-}
+    while not nombre_ingresado:
+        for evento in pygame.event.get():
+            if evento.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if evento.type == pygame.KEYDOWN:
+                if evento.key == pygame.K_RETURN:
+                    nombre_ingresado = True
+            if evento.type == pygame.KEYUP:
+                if evento.key == pygame.K_BACKSPACE:
+                    nombre_jugador = nombre_jugador[:-1]
+                else:
+                    nombre_jugador += evento.unicode
+            
+        pantalla.blit(fondo, (0, 0))
+        texto_ingreso = font_titulo.render("Ingresa tu nombre:", True, Colores.blanco)
+        enter = font_titulo.render("Ent para continuar", True, Colores.blanco)
+        texto_nombre = font_titulo.render(nombre_jugador, True, Colores.blanco)
+        pantalla.blit(texto_ingreso, (70, 150))
+        pantalla.blit(texto_nombre, (70, 240))
+        pantalla.blit(enter, (120, 510))
+        pygame.display.update()
 
-void todos(int on)
-{
-  digitalWrite(A, HIGH);
-  digitalWrite(B, HIGH);
-  digitalWrite(C, HIGH);
-  digitalWrite(D, HIGH);
-  digitalWrite(E, HIGH);
-  digitalWrite(F, HIGH);
-  digitalWrite(G, HIGH);
-}
+# Obtener el usuario con el puntaje máximo
+top_score_user = get_top_score_user()
 
-void actualizarDisplay(int piso) {
-  switch (piso) {
-    case 1:
-      digitalWrite(A, HIGH);
-      digitalWrite(B, HIGH);
-      digitalWrite(C, HIGH);
-      digitalWrite(D, HIGH);
-      digitalWrite(E, HIGH);
-      digitalWrite(F, HIGH);
-      digitalWrite(G, LOW);
-      break;
-    case 2:
-      digitalWrite(A, LOW);
-      digitalWrite(B, HIGH);
-      digitalWrite(C, HIGH);
-      digitalWrite(D, LOW);
-      digitalWrite(E, LOW);
-      digitalWrite(F, LOW);
-      digitalWrite(G, LOW);
-      break;
-    case 3:
-      digitalWrite(A, HIGH);
-      digitalWrite(B, HIGH);
-      digitalWrite(C, HIGH);
-      digitalWrite(D, HIGH);
-      digitalWrite(E, LOW);
-      digitalWrite(F, LOW);
-      digitalWrite(G, HIGH);
-      break;
-    case 4:
-      digitalWrite(A, LOW);
-      digitalWrite(B, HIGH);
-      digitalWrite(C, HIGH);
-      digitalWrite(D, LOW);
-      digitalWrite(E, LOW);
-      digitalWrite(F, HIGH);
-      digitalWrite(G, HIGH);
-      break;
-    case 5:
-      digitalWrite(A, HIGH);
-      digitalWrite(B, LOW);
-      digitalWrite(C, HIGH);
-      digitalWrite(D, HIGH);
-      digitalWrite(E, LOW);
-      digitalWrite(F, HIGH);
-      digitalWrite(G, HIGH);
-      break;
-    case 6:
-      digitalWrite(A, HIGH);
-      digitalWrite(B, LOW);
-      digitalWrite(C, HIGH);
-      digitalWrite(D, HIGH);
-      digitalWrite(E, HIGH);
-      digitalWrite(F, HIGH);
-      digitalWrite(G, HIGH);
-      break;
-    case 7:
-      digitalWrite(A, HIGH);
-      digitalWrite(B, HIGH);
-      digitalWrite(C, HIGH);
-      digitalWrite(D, LOW);
-      digitalWrite(E, LOW);
-      digitalWrite(F, LOW);
-      digitalWrite(G, LOW);
-      break;
-    case 8:
-      digitalWrite(A, HIGH);
-      digitalWrite(B, HIGH);
-      digitalWrite(C, HIGH);
-      digitalWrite(D, HIGH);
-      digitalWrite(E, HIGH);
-      digitalWrite(F, HIGH);
-      digitalWrite(G, HIGH);
-      break;
-    case 9:
-      digitalWrite(A, HIGH);
-      digitalWrite(B, HIGH);
-      digitalWrite(C, HIGH);
-      digitalWrite(D, HIGH);
-      digitalWrite(E, LOW);
-      digitalWrite(F, HIGH);
-      digitalWrite(G, HIGH);
-      break;
-  }
-}
-// FIN FUNCIONES
+# Evento personalizado para actualizar el juego
+ACTUALIZAR_JUEGO = pygame.USEREVENT
+pygame.time.set_timer(ACTUALIZAR_JUEGO, 200)
 
-void setup() {
-pinMode(BOTON_SUBIR, INPUT_PULLUP);
-pinMode(BOTON_BAJAR, INPUT_PULLUP);
-pinMode(BOTON_PAUSAR, INPUT_PULLUP);
-pinMode(led_Rojo, OUTPUT);
-pinMode(led_Verde, OUTPUT);
-pinMode(A, OUTPUT);
-pinMode(B, OUTPUT);
-pinMode(C, OUTPUT);
-pinMode(D, OUTPUT);
-pinMode(E, OUTPUT);
-pinMode(F, OUTPUT);
-pinMode(G, OUTPUT);
-Serial.begin(9600);
-mostrarPiso(contador);
-}
+# Función para mostrar la tabla de puntuaciones
+def mostrar_tabla_puntuaciones():
+    fondo = pygame.image.load("fondo\dfondo3.png").convert()
+    fondo = pygame.transform.scale(fondo, (ANCHO, ALTO))
+    opcion_salir2 = font_titulo.render("Esc para volver", True, Colores.blanco)
+    top = font_titulo.render("Puntuaciones: ", True, Colores.blanco)
+    while True:
+        for evento in pygame.event.get():
+            if evento.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if evento.type == pygame.KEYDOWN:
+                if evento.key == pygame.K_ESCAPE:
+                    return
 
-void loop() {
-// Leer el estado de los botones
-botonSubir = digitalRead(BOTON_SUBIR);
-botonBajar = digitalRead(BOTON_BAJAR);
-botonPausa = digitalRead(BOTON_PAUSAR);
+        pantalla.blit(fondo, (0, 0))
+        pantalla.blit(opcion_salir2, (140, 540, 50, 50))
+        pantalla.blit(top, (130, 120, 50, 50))
+        # Obtener los datos de la tabla de puntuaciones desde la base de datos
+        cursor = conn.execute("SELECT username, score FROM scores ORDER BY score DESC LIMIT 5")
+        puntuaciones = cursor.fetchall()
 
-// Si se presiona el botón de subir, mover hacia arriba
-if (botonSubir == LOW) {
-moverPiso("subir", TIEMPO_POR_PISO);
-}
+        # Mostrar los datos en la pantalla
+        y = 210
+        for i, puntuacion in enumerate(puntuaciones):
+            texto_puntuacion = font_titulo.render(f"{i+1}. {puntuacion[0]}: {puntuacion[1]}", True, Colores.blanco)
+            pantalla.blit(texto_puntuacion, (135, y))
+            y += 40
 
-// Si se presiona el botón de bajar, mover hacia abajo
-if (botonBajar == LOW) {
-moverPiso("bajar", TIEMPO_POR_PISO);
-}
+        pygame.display.update()
 
-// Si se presiona el botón de pausa, detener el movimiento
-if (botonPausa == LOW) {
-  mensaje = "El montacargas se detuvo";
-  Serial.println(mensaje);
-  digitalWrite(led_Verde, 0);
-  digitalWrite(led_Rojo, 1);
-  delay(TIEMPO_ESPERA_MOVIMIENTO);
-  mostrarPiso(contador);
-}
+# Función para mostrar el menú
+def mostrar_menu():
+    fondo = pygame.image.load("fondo\menu2.png").convert()
+    fondo = pygame.transform.scale(fondo, (ANCHO, ALTO))
+    while True:
+        for evento in pygame.event.get():
+            if evento.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if evento.type == pygame.MOUSEBUTTONDOWN:
+                # Obtener la posición del cursor del mouse al hacer clic
+                x, y = pygame.mouse.get_pos()
+                if 160 < x < 300 and 160 < y < 230:  # Opción 1: Iniciar juego
+                    juego.reiniciar()
+                    return
+                elif 110 < x < 350 and 280 < y < 330:  # Opción 2: Ver tabla de puntuaciones
+                    mostrar_tabla_puntuaciones()
+                elif 200 < x < 250 and 370 < y < 430:  # Opción 3: Salir
+                    pygame.quit()
+                    sys.exit()
+
+        pantalla.blit(fondo, (0, 0))
+        # Dibujar las opciones del menú en la pantalla
+        pantalla.blit(superficie_opcion_jugar, (160, 190, 50, 50))
+        pantalla.blit(superficie_opcion_puntuaciones, (150, 295, 50, 50))
+        pantalla.blit(superficie_opcion_salir, (220, 405, 50, 50))
+        pygame.display.update()
+
+# Mostrar el menú antes del juego
+mostrar_menu()
+# Mostrar la ventana de ingreso de nombre
+mostrar_ventana_nombre()
+
+# Bucle principal del juego
+tiempo_inicio = time.time()
+while True:
+    for evento in pygame.event.get():
+        # Verificar si se ha cerrado la ventana
+        if evento.type == pygame.QUIT:
+            pygame.quit()
+            sys.exit()
+        # Verificar si se ha presionado una tecla
+        if evento.type == pygame.KEYDOWN:
+            # Verificar si el juego ha terminado
+            if juego.fin_juego == True:
+                # Verificar si se ha presionado la tecla espaciadora
+                if evento.key == pygame.K_SPACE:
+                    # Insertar el puntaje en la base de datos
+                    insert_score(nombre_jugador, juego.puntaje)
+                    # Obtener el usuario con el puntaje máximo
+                    top_score_user = get_top_score_user()
+                    print("Usuario con el puntaje máximo:")
+                    print(f"{top_score_user[0]}: {top_score_user[1]}")
+                    # Reiniciar el juego
+                    juego.fin_juego = False
+                    juego.reiniciar()
+                # Verificar si se ha presionado la tecla de escape
+                elif evento.key == pygame.K_ESCAPE:
+                    pygame.quit()
+                    sys.exit()
+            # Verificar otras teclas presionadas si el juego no ha terminado
+            elif evento.key == pygame.K_LEFT and juego.fin_juego == False:
+                juego.mover_izquierda()
+            elif evento.key == pygame.K_RIGHT and juego.fin_juego == False:
+                juego.mover_derecha()
+            elif evento.key == pygame.K_DOWN and juego.fin_juego == False:
+                juego.mover_abajo()
+                juego.actualizar_puntaje(0, 1)
+            elif evento.key == pygame.K_UP and juego.fin_juego == False:
+                juego.rotar()
+        # Verificar si se ha activado el evento personalizado ACTUALIZAR_JUEGO
+        if evento.type == ACTUALIZAR_JUEGO and juego.fin_juego == False:
+            juego.mover_abajo()
+
+    # Dibujar los elementos en la pantalla
+    pantalla.blit(fondo, (0, 0))
+
+    tiempo_transcurrido = time.time() - tiempo_inicio
+    minutos = int(tiempo_transcurrido // 60)
+    segundos = int(tiempo_transcurrido % 60)
+
+    # Mostrar el tiempo transcurrido en la pantalla
+    textp_tiempo = font_titulo.render(f"Tiempo:",True, Colores.blanco)
+    superficie_tiempo2 = font_titulo.render(f"{minutos:02d}:{segundos:02d}", True, Colores.blanco)
+    pantalla.blit(textp_tiempo, (330, 410))
+    pantalla.blit(superficie_tiempo2, (330, 445))
+
+    # Dibujar el puntaje
+    superficie_valor_puntaje = font_titulo.render(str(juego.puntaje), True, Colores.blanco)
+    pantalla.blit(superficie_puntaje, (350, 15, 50, 50))
+    pygame.draw.rect(pantalla, Colores.gris_oscuro, rect_puntaje, 0, 10)
+    pantalla.blit(
+        superficie_valor_puntaje,
+        superficie_valor_puntaje.get_rect(
+            centerx=rect_puntaje.centerx, centery=rect_puntaje.centery
+        ),
+    )
+
+    # Dibujar otros elementos del juego
+    pantalla.blit(superficie_siguiente, (335, 170, 50, 50))
+    pantalla.blit(mejor_punt, (330, 480, 50, 50))
+    if juego.fin_juego:
+        pantalla.blit(
+            superficie_fin_juego,
+            superficie_fin_juego.get_rect(centerx=ANCHO // 2, centery=ALTO // 2),
+        )
+        pantalla.blit(opcion_continuar, (130, 330, 50, 50))
+        pantalla.blit(opcion_salir, (160, 360, 50, 50))
+    else:
+        juego.dibujar(pantalla)
+
+    # Mostrar el usuario con el puntaje máximo si está disponible
+    if top_score_user is not None:
+        texto_usuario = font_titulo.render(
+            f"{top_score_user[0]}:", True, Colores.blanco
+        )
+        texto_puntaje = font_titulo.render(
+            f"{top_score_user[1]}", True, Colores.blanco
+        )
+        pantalla.blit(texto_usuario, (335, 520))
+        pantalla.blit(texto_puntaje, (335, 550))
+
+    # Actualizar la pantalla y establecer la velocidad de fotogramas
+    pygame.display.update()
+    reloj.tick(60)
+
+
 }
 ```
 ### 🤖Funcionando
