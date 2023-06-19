@@ -725,14 +725,9 @@ La variable **botonBajar** es una variable que se utiliza para almacenar el esta
 
 la variable **botonPausa** es una variable que se utiliza para almacenar el estado del botón de pausa. Se lee su estado utilizando la función digitalRead().
 
----
-## <img src="tinkercad.png" alt="Tinkercad" height="32px"> Link al proyecto
-
-- [Proyecto](https://www.tinkercad.com/things/cn31fUhwE2b)
-
 ### 📄Parcial:
 
-[Consignas](https://github.com/magikboy/Parcial-1/blob/02b8c8bd45b8f18107d74b41cb75eaca4d41e1a5/Primer%20Parcial%20SPD%20Parte%20Practica.pdf)
+[Consignas](https://github.com/magikboy/parcial-1-labo/blob/e1263af61cea1b0cd53b5fe3f9e29e358a023020/Pygame_Modelos_TPs.pdf)
 
 ### 📄Fuentes
 
