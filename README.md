@@ -8,12 +8,9 @@ Juego tetris
 
 ![Arduino](https://github.com/magikboy/Parcial-1/blob/30c7b791849ce1d70de15ec52cb6a92ac3aec450/ArduinoTinkercad.jpg)
 
-### Modelo de montacarga funcional
+### VIDEOJUEGO TETRIS 🎮
 
-![Montacargas de hospital](https://github.com/magikboy/Parcial-1/blob/1a975207471b0b0f8a8c081eb3d869e3463c76a1/tinkercad1.png)
-### 🦴Modelo esquematico del montacargas
 
-![Montacargas de hospital](https://github.com/magikboy/Parcial-1/blob/7917a8768ca4b1a21c14e51af70ec9adf790448b/imagen_2023-05-18_121209060.png)
 
 ## 📄Consigna Montacargas:
 Se nos pide armar un modelo de montacarga funcional como maqueta para un hospital. El
