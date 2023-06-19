@@ -495,23 +495,10 @@ Métodos para verificar y modificar celdas:
 
 ⭕El método limpiar_filas_completas limpia todas las filas completas y desplaza las filas superiores hacia abajo.
 
-Método para reiniciar la cuadrícula: El método reiniciar establece todos los valores de la cuadrícula en 0, reiniciando así la cuadrícula.
+⭕Método para reiniciar la cuadrícula: El método reiniciar establece todos los valores de la cuadrícula en 0, reiniciando así la cuadrícula.
 
 
 Método para dibujar la cuadrícula: El método dibujar utiliza la biblioteca Pygame para dibujar la cuadrícula en una pantalla de juego. Itera sobre cada celda de la cuadrícula, obtiene el valor de la celda y dibuja un rectángulo en la pantalla utilizando el color correspondiente a ese valor de celda.
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 ### 🧠funcionamiento del juego
 
@@ -627,13 +614,37 @@ class Juego:
 			self.siguiente_bloque.dibujar(pantalla, 270, 270)
 
 ```
-La función **displayOff()** se utiliza para apagar todos los segmentos del display cuando se sale del switch o se necesita apagar el display.
+Importaciones:
 
-Las funciones **cero() a nueve()**se utilizan para mostrar los dígitos del 0 al 9 en el display. Cada función enciende los segmentos necesarios para mostrar el dígito correspondiente. Por ejemplo, la función cero() enciende todos los segmentos excepto el segmento G.
+from grilla import * y from bloques import *: Importan las clases y funciones necesarias del módulo "grilla" y "bloques", respectivamente.
+import random: Importa el módulo "random" para generar números aleatorios.
+import pygame: Importa la biblioteca Pygame para crear la interfaz gráfica del juego.
+Definición de la clase Juego:
 
-La función **todos()** enciende todos los segmentos del display, lo que resulta en la visualización del número 8.
+__init__(self): El método inicializador de la clase Juego se encarga de configurar las variables y objetos iniciales del juego.
 
-La función **actualizarDisplay()** se utiliza para mostrar el número del piso en el que se encuentra un elevador, por ejemplo. Se utiliza un switch para seleccionar el número del piso y luego se llama a esta función para actualizar el display con el número correspondiente. La función toma como argumento el número del piso y utiliza los comandos digitalWrite() para encender los segmentos necesarios para mostrar el número en el display.
+⭕actualizar_puntaje(self, lineas_completadas, puntos_movimiento_abajo): Actualiza el puntaje del jugador según el número de líneas completadas y los puntos obtenidos por movimiento hacia abajo.
+
+⭕obtener_bloque_aleatorio(self): Devuelve un bloque aleatorio de la lista de bloques disponibles.
+
+⭕mover_izquierda(self): Mueve el bloque actual hacia la izquierda.
+
+⭕mover_derecha(self): Mueve el bloque actual hacia la derecha.
+
+⭕mover_abajo(self): Mueve el bloque actual hacia abajo y verifica si se debe bloquear el bloque actual en su posición actual.
+
+⭕bloque_bloqueado(self): Fija el bloque actual en su posición actual en la grilla y obtiene el siguiente bloque.
+
+⭕reiniciar(self): Reinicia el juego, reiniciando la grilla, la lista de bloques, el bloque actual y el puntaje.
+
+⭕bloque_encaja(self): Verifica si el bloque actual encaja correctamente en la grilla.
+
+⭕rotar(self): Rota el bloque actual y deshace la rotación si el bloque no encaja o está fuera de la grilla.
+
+⭕bloque_dentro(self): Verifica si todas las celdas del bloque actual están dentro de la grilla.
+
+⭕dibujar(self, pantalla): Dibuja la grilla, el bloque actual y el siguiente bloque en la pantalla de juego.
+
 
 ### 🧠Posicionamiento de los bloques en las celdas
 
