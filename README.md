@@ -737,5 +737,6 @@ la variable **botonPausa** es una variable que se utiliza para almacenar el esta
 ### 📄Fuentes
 
 - [Youtube](https://www.youtube.com)
-- [electrontools](https://www.electrontools.com/Home/WP/display-7-segmentos/)
+- [pygame](https://www.pygame.org/docs/ref/draw.html)
+- [programarcadegames](http://programarcadegames.com/index.php?chapter=formatting&lang=en#:~:text=A%20format%20of%20.,1.5555%20would%20display%20as%201.56%20)
 - [Utn](http://www.sistemas-utnfra.com.ar/#/home)
