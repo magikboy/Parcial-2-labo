@@ -38,16 +38,26 @@ bajó totalmente no se puede mover hacia ningún lado.
 de usuario. En tal sentido, se deberá elaborar un ranking ordenado de
 mayor a menor puntuación, mostrando su respectivo nombre y puntuación.
 
-Incluir:
+Incluir.
+
 Archivos.
+
 POO.
+
 Texto para ir mostrando el SCORE.
+
 Eventos.
+
 Colisiones.
+
 Manejo de rectángulo.
+
 Temporizador.
+
 Imágenes.
+
 Audios.
+
 Ranking de puntuaciones
 
 ### 🚀Codigo del proyecto
