@@ -40,25 +40,25 @@ mayor a menor puntuación, mostrando su respectivo nombre y puntuación.
 
 Incluir.
 
-Archivos.
+✔Archivos.
 
-POO.
+✔POO.
 
-Texto para ir mostrando el SCORE.
+✔Texto para ir mostrando el SCORE.
 
-Eventos.
+✔Eventos.
 
-Colisiones.
+✔Colisiones.
 
-Manejo de rectángulo.
+✔Manejo de rectángulo.
 
-Temporizador.
+✔Temporizador.
 
-Imágenes.
+✔Imágenes.
 
-Audios.
+✔Audios.
 
-Ranking de puntuaciones
+✔Ranking de puntuaciones
 
 ### 🚀Codigo del proyecto
 ``` py
