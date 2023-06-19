@@ -662,6 +662,61 @@ class BloqueZ(Bloque):
 ```
 
 
+### 🧠Funcionamiento de los bloques
+
+``` py
+from colores import Colores
+import pygame
+from posicion import Posicion
+
+class Bloque:
+    def __init__(self, id):
+        self.id = id
+        self.celdas = {}
+        self.tam_celda = 30
+        self.despl_fila = 0
+        self.despl_columna = 0
+        self.estado_rotacion = 0
+        self.colores = Colores.obtener_colores_celda()  # Inicializar los colores para las celdas
+
+    def mover(self, filas, columnas):
+        self.despl_fila += filas  # Actualizar el desplazamiento de filas
+        self.despl_columna += columnas  # Actualizar el desplazamiento de columnas
+
+    def obtener_posiciones_celdas(self):
+        mosaicos = self.celdas[self.estado_rotacion]  # Obtener las posiciones de las celdas para el estado de rotación actual
+        moved_tiles = []
+        for posicion in mosaicos:
+            # Aplicar el desplazamiento actual a cada posición de celda
+            posicion = Posicion(posicion.fila + self.despl_fila, posicion.columna + self.despl_columna)
+            moved_tiles.append(posicion)
+        return moved_tiles  # Devolver las posiciones de celda actualizadas
+
+    def rotar(self):
+        self.estado_rotacion += 1  # Incrementar el estado de rotación
+        if self.estado_rotacion == len(self.celdas):
+            self.estado_rotacion = 0  # Restablecer el estado de rotación si supera el número de rotaciones disponibles
+
+    def deshacer_rotacion(self):
+        self.estado_rotacion -= 1  # Decrementar el estado de rotación
+        if self.estado_rotacion == 0:
+            self.estado_rotacion = len(self.celdas) - 1  # Volver al último estado de rotación si se vuelve negativo
+
+    def dibujar(self, pantalla, offset_x, offset_y):
+        mosaicos = self.obtener_posiciones_celdas()  # Obtener las posiciones de celda actuales
+        for mosaico in mosaicos:
+            # Calcular el rectángulo para cada celda y dibujarlo en la pantalla
+            rectangulo_mosaico = pygame.Rect(
+                offset_x + mosaico.columna * self.tam_celda,
+                offset_y + mosaico.fila * self.tam_celda,
+                self.tam_celda - 1,
+                self.tam_celda - 1
+            )
+            pygame.draw.rect(pantalla, self.colores[self.id], rectangulo_mosaico)  # Dibujar la celda con su color asignado
+
+```
+
+
 La función **setup()** es una función que se ejecuta una sola vez al inicio del programa. En ella se inicializan los pines que se van a utilizar como entradas o salidas, y se establece la velocidad de comunicación para la interfaz serial (Serial.begin(9600)). Además, se llama a la función mostrarPiso() para que muestre el piso en el que se encuentra el montacargas en ese momento.
 
 La variable **botonSubir** es una variable que se utiliza para almacenar el estado del botón de subir. Se lee su estado utilizando la función digitalRead(), que devuelve un valor HIGH o LOW dependiendo de si el botón está pulsado o no.
