@@ -10,8 +10,6 @@ Juego tetris
 
 ### VIDEOJUEGO TETRIS 🎮
 
-
-
 ## 📄Consigna del juego:
 Pygame :TETRIS
 Especificaciones mínimas:
@@ -60,7 +58,7 @@ Incluir.
 
 ✔Ranking de puntuaciones
 
-### 🚀Codigo del proyecto
+### 🚀ejercutable del proyecto y menus
 ``` py
 import pygame
 import sys
