@@ -654,7 +654,11 @@ class Posicion:
         self.fila = fila
         self.columna = columna
 ```
+La clase Posicion tiene un método inicializador __init__(self, fila, columna) que se encarga de establecer los valores de fila y columna para una instancia de Posicion. Recibe dos parámetros: fila y columna, que son los valores numéricos que representan la posición en la matriz.
 
+Dentro del método __init__, los parámetros fila y columna se asignan a los atributos de la instancia self.fila y self.columna, respectivamente. Esto permite acceder a estos valores en otros métodos o partes del programa utilizando la notación de punto, por ejemplo, posicion.fila o posicion.columna.
+
+En resumen, la clase Posicion proporciona una forma conveniente de representar una posición en una matriz bidimensional mediante sus atributos fila y columna. Puede ser utilizada en combinación con otras clases o estructuras de datos para implementar diversas funcionalidades, como en el caso del juego de Tetris donde se utilizan las posiciones para representar las ubicaciones de las celdas en la grilla.
 
 ### 🧠Rotaciones de los distintos Bloques
 
@@ -749,7 +753,15 @@ class BloqueZ(Bloque):
         self.mover(0, 3)  # Ajustar la posición inicial del bloque
 
 ```
+La clase "Bloque" tiene un constructor y varios métodos para manipular y mover los bloques. La clase base "Bloque" tiene un atributo "id" que representa el identificador del bloque.
 
+Las clases de bloques específicos, como "BloqueL", "BloqueJ", "BloqueI", "BloqueO", "BloqueS", "BloqueT" y "BloqueZ", se definen utilizando la herencia de la clase "Bloque".
+
+Cada clase de bloque específico tiene un constructor que inicializa el identificador del bloque llamando al constructor de la clase base "Bloque". Además, cada clase de bloque específico define un atributo "celdas" que es un diccionario. Las claves de este diccionario representan las diferentes rotaciones del bloque, y los valores son listas de objetos de la clase "Posicion". Cada objeto "Posicion" representa una posición en una cuadrícula y se utiliza para determinar la ubicación de las celdas del bloque en cada rotación.
+
+Por ejemplo, la clase "BloqueL" define las posiciones de las celdas para cada rotación del bloque L en el diccionario "self.celdas". Cada rotación tiene una clave (0, 1, 2, 3) y el valor asociado es una lista de objetos "Posicion" que representan las coordenadas de las celdas en esa rotación específica.
+
+Después de definir las posiciones de las celdas para cada bloque, se llama al método "mover" en cada bloque para ajustar su posición inicial en la cuadrícula del juego.
 
 ### 🧠Funcionamiento de los bloques
 
@@ -804,15 +816,21 @@ class Bloque:
             pygame.draw.rect(pantalla, self.colores[self.id], rectangulo_mosaico)  # Dibujar la celda con su color asignado
 
 ```
+Importaciones: Se importan los módulos necesarios para el funcionamiento del código, incluyendo "Colores" y "Posicion". Estos módulos no se proporcionan en el código que has compartido, pero asumiré que contienen las definiciones necesarias para el correcto funcionamiento de la clase "Bloque".
 
+Clase Bloque: La clase "Bloque" tiene varios atributos y métodos para manipular y representar un conjunto de celdas.
 
-La función **setup()** es una función que se ejecuta una sola vez al inicio del programa. En ella se inicializan los pines que se van a utilizar como entradas o salidas, y se establece la velocidad de comunicación para la interfaz serial (Serial.begin(9600)). Además, se llama a la función mostrarPiso() para que muestre el piso en el que se encuentra el montacargas en ese momento.
+El método __init__(self, id) es el constructor de la clase y se ejecuta cuando se crea una instancia de la clase "Bloque". Recibe un parámetro "id" que se asigna al atributo "id" del objeto creado. Además, inicializa varios atributos más, como "celdas", "tam_celda", "despl_fila", "despl_columna", "estado_rotacion" y "colores".
 
-La variable **botonSubir** es una variable que se utiliza para almacenar el estado del botón de subir. Se lee su estado utilizando la función digitalRead(), que devuelve un valor HIGH o LOW dependiendo de si el botón está pulsado o no.
+El método mover(self, filas, columnas) se utiliza para desplazar el bloque en una cantidad determinada de filas y columnas. Actualiza los atributos "despl_fila" y "despl_columna" sumando los valores pasados como argumentos.
 
-La variable **botonBajar** es una variable que se utiliza para almacenar el estado del botón de bajar. Se lee su estado utilizando la función digitalRead().
+El método obtener_posiciones_celdas(self) devuelve una lista de objetos "Posicion" que representan las posiciones de las celdas del bloque. Aplica el desplazamiento actual a cada posición de celda y las devuelve en una lista.
 
-la variable **botonPausa** es una variable que se utiliza para almacenar el estado del botón de pausa. Se lee su estado utilizando la función digitalRead().
+El método rotar(self) se utiliza para rotar el bloque. Incrementa el atributo "estado_rotacion" en 1. Si el estado de rotación alcanza el número máximo de rotaciones disponibles (determinado por la longitud de "celdas"), se reinicia a 0.
+
+El método deshacer_rotacion(self) se utiliza para deshacer la rotación del bloque. Decrementa el atributo "estado_rotacion" en 1. Si el estado de rotación se vuelve negativo, se establece en el último estado de rotación disponible.
+
+El método dibujar(self, pantalla, offset_x, offset_y) se encarga de dibujar el bloque en la pantalla de juego. Toma como argumentos la pantalla en la que se dibujará, así como los desplazamientos de offset en los ejes X e Y. Obtiene las posiciones actuales de las celdas y, para cada celda, calcula un rectángulo en función de su posición y tamaño. Luego, utiliza la función pygame.draw.rect() para dibujar el rectángulo en la pantalla, utilizando el color correspondiente al identificador de bloque ("id") obtenido de la lista de colores.
 
 ### 📄Parcial:
 
