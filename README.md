@@ -478,11 +478,40 @@ class Grid:
 
 ```
 
-Las constantes definen los pines que se usan para los botones, LEDs y segmentos de un display de siete segmentos. También define los tiempos que tarda el montacargas en llegar a cada piso y el tiempo que se espera después de que se mueve el montacargas.
 
-Las variables booleanas son para almacenar el estado de los botones y el estado de movimiento del montacargas.
+Inicialización de la cuadrícula: En el método __init__, se definen las características iniciales de la cuadrícula. Se establece el número de filas y columnas, el tamaño de cada celda en píxeles y se crea una cuadrícula vacía representada por una lista bidimensional (self.grid).
 
-El contador se inicializa en 0 y se utiliza para indicar el piso actual en el que se encuentra el montacargas. El array de mensajes de pisos se usa para almacenar mensajes de texto que indican el piso al que se mueve el montacargas.
+Métodos para verificar y modificar celdas:
+
+⭕El método esta_dentro verifica si una celda está dentro de los límites de la cuadrícula.
+
+⭕El método esta_vacia verifica si una celda está vacía (contiene el valor 0).
+
+⭕El método fila_completa verifica si una fila está completamente llena (no contiene valores de 0).
+
+⭕El método limpiar_fila establece todos los valores de una fila en 0.
+
+⭕El método desplazar_fila_abajo desplaza una fila hacia abajo, copiando los valores de la fila superior.
+
+⭕El método limpiar_filas_completas limpia todas las filas completas y desplaza las filas superiores hacia abajo.
+
+Método para reiniciar la cuadrícula: El método reiniciar establece todos los valores de la cuadrícula en 0, reiniciando así la cuadrícula.
+
+
+Método para dibujar la cuadrícula: El método dibujar utiliza la biblioteca Pygame para dibujar la cuadrícula en una pantalla de juego. Itera sobre cada celda de la cuadrícula, obtiene el valor de la celda y dibuja un rectángulo en la pantalla utilizando el color correspondiente a ese valor de celda.
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ### 🧠funcionamiento del juego
 
