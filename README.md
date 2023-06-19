@@ -18,13 +18,13 @@ Especificaciones mínimas:
 
 Los bloques solamente deberán ser de 4 formas:
 
-Rectángulo
+✔Rectángulo
 
-Cuadrado
+✔Cuadrado
 
-Forma de T
+✔Forma de T
 
-Forma de L
+✔Forma de L
 
 -Cada bloque deberá aparecer de manera aleatoria, es decir no debe haber
 un orden entre un tipo de elemento y el que le sigue.
