@@ -346,45 +346,87 @@ while True:
 
 ### 🤖Juego en funcionamiento
 
-### 🧠Explicacion
+### 🧠GRILLA DEL JUEGO
 
-``` C++
-#define BOTON_SUBIR 2
-#define BOTON_BAJAR 3
-#define BOTON_PAUSAR 4
-#define led_Verde 5
-#define led_Rojo 6
-#define A 7
-#define B 8
-#define C 9
-#define D 10
-#define E 11
-#define F 12
-#define G 13
-const int TIEMPO_ESPERA_BOTON = 10; // Tiempo de espera entre lecturas de botones en milisegundos.
-const int TIEMPO_POR_PISO = 3000; // Tiempo que tarda el montacargas en llegar a cada piso en milisegundos.
-const int TIEMPO_ESPERA_MOVIMIENTO = 3000; // Tiempo de espera después de que se mueve el montacargas en milisegundos.
+``` py
+import pygame
+from colores import Colores
 
-boolean botonSubir = false;
-boolean botonBajar = false;
-boolean botonPausa = false;
-boolean enMovimiento = false;
+class Grid:
+    def __init__(self):
+        # Número de filas y columnas en la cuadrícula
+        self.num_filas = 20
+        self.num_columnas = 10
+        # Tamaño de cada celda en píxeles
+        self.tamaño_celda = 30
+        # Crear una cuadrícula vacía
+        self.grid = [[0 for j in range(self.num_columnas)] for i in range(self.num_filas)]
+        # Obtener los colores para las celdas de la clase Colores
+        self.colores = Colores.obtener_colores_celda()
 
-int contador = 0; //INICIALIZO EL CONTADOR EN 0
-String mensaje = ""; //PARA PODER ESCRIBIR EN EL MONITOR
+    def imprimir_grid(self):
+        # Imprimir la cuadrícula en la consola
+        for fila in range(self.num_filas):
+            for columna in range(self.num_columnas):
+                print(self.grid[fila][columna], end=" ")
+            print()
 
-const char* mensajesPisos[] = {
-  "Llego al piso 0.",
-  "Llego al piso 1.",
-  "Llego al piso 2.",
-  "Llego al piso 3.",
-  "Llego al piso 4.",
-  "Llego al piso 5.",
-  "Llego al piso 6.",
-  "Llego al piso 7.",
-  "Llego al piso 8.",
-  "Llego al piso 9."
-};
+    def esta_dentro(self, fila, columna):
+        # Verificar si una celda está dentro de los límites de la cuadrícula
+        if fila >= 0 and fila < self.num_filas and columna >= 0 and columna < self.num_columnas:
+            return True
+        return False
+
+    def esta_vacia(self, fila, columna):
+        # Verificar si una celda está vacía (contiene un valor de 0)
+        if self.grid[fila][columna] == 0:
+            return True
+        return False
+
+    def fila_completa(self, fila):
+        # Verificar si una fila está completamente llena (no contiene valores de 0)
+        for columna in range(self.num_columnas):
+            if self.grid[fila][columna] == 0:
+                return False
+        return True
+
+    def limpiar_fila(self, fila):
+        # Limpiar una fila, estableciendo todos los valores a 0
+        for columna in range(self.num_columnas):
+            self.grid[fila][columna] = 0
+
+    def desplazar_fila_abajo(self, fila, num_filas):
+        # Desplazar una fila hacia abajo, copiando los valores de la fila superior
+        for columna in range(self.num_columnas):
+            self.grid[fila+num_filas][columna] = self.grid[fila][columna]
+            self.grid[fila][columna] = 0
+
+    def limpiar_filas_completas(self):
+        # Limpiar todas las filas completas y desplazar las filas superiores hacia abajo
+        completadas = 0
+        for fila in range(self.num_filas-1, 0, -1):
+            if self.fila_completa(fila):
+                self.limpiar_fila(fila)
+                completadas += 1
+            elif completadas > 0:
+                self.desplazar_fila_abajo(fila, completadas)
+        return completadas
+
+    def reiniciar(self):
+        # Reiniciar la cuadrícula, estableciendo todos los valores a 0
+        for fila in range(self.num_filas):
+            for columna in range(self.num_columnas):
+                self.grid[fila][columna] = 0
+
+    def dibujar(self, pantalla):
+        # Dibujar la cuadrícula en la pantalla de juego utilizando colores
+        for fila in range(self.num_filas):
+            for columna in range(self.num_columnas):
+                valor_celda = self.grid[fila][columna]
+                rectangulo_celda = pygame.Rect(columna*self.tamaño_celda + 11, fila*self.tamaño_celda + 11,
+                self.tamaño_celda - 1, self.tamaño_celda - 1)
+                pygame.draw.rect(pantalla, self.colores[valor_celda], rectangulo_celda)
+
 ```
 
 Las constantes definen los pines que se usan para los botones, LEDs y segmentos de un display de siete segmentos. También define los tiempos que tarda el montacargas en llegar a cada piso y el tiempo que se espera después de que se mueve el montacargas.
