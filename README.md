@@ -1,4 +1,4 @@
-# parcial-1-labo
+# Parcial-1-labo
 ### 📄Documentación de la Laboratorio - UTN Tecnicatura Superior en Programación.
 
 ### Nombre: Bosco Mascaro Massimo Ariel
