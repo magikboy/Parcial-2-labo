@@ -533,6 +533,11 @@ Bucle principal del juego:
 import pygame
 from colores import Colores
 
+#---------------------------------------------------------------------------------------------------------------------#
+#-----------------------------------------------------#Creacion de la Grilla#-----------------------------------------#
+#---------------------------------------------------------------------------------------------------------------------#
+
+
 class Grid:
     def __init__(self):
         # Número de filas y columnas en la cuadrícula
@@ -541,9 +546,14 @@ class Grid:
         # Tamaño de cada celda en píxeles
         self.tamaño_celda = 30
         # Crear una cuadrícula vacía
-        self.grid = [[0 for j in range(self.num_columnas)] for i in range(self.num_filas)]
+        self.grid = [[0 for j in range(self.num_columnas)] for i in range(self.num_filas)] 
+        """esta línea de código inicializa la cuadrícula (self.grid) como una matriz de tamaño self.num_filas x self.num_columnas, 
+        donde todas las celdas se establecen inicialmente en 0."""
         # Obtener los colores para las celdas de la clase Colores
         self.colores = Colores.obtener_colores_celda()
+
+        """se Inician los atributos de la cuadrícula, como el número de filas, 
+        columnas, tamaño de celda, crea una cuadrícula vacía y obtiene los colores para las celdas."""
 
     def imprimir_grid(self):
         # Imprimir la cuadrícula en la consola
@@ -557,6 +567,7 @@ class Grid:
         if fila >= 0 and fila < self.num_filas and columna >= 0 and columna < self.num_columnas:
             return True
         return False
+     
 
     def esta_vacia(self, fila, columna):
         # Verificar si una celda está vacía (contiene un valor de 0)
@@ -608,6 +619,11 @@ class Grid:
                 self.tamaño_celda - 1, self.tamaño_celda - 1)
                 pygame.draw.rect(pantalla, self.colores[valor_celda], rectangulo_celda)
 
+
+
+#---------------------------------------------------------------------------------------------------------------------#
+#-----------------------------------------------------#Fin Grilla#----------------------------------------------------#
+#---------------------------------------------------------------------------------------------------------------------#
 ```
 
 
@@ -640,6 +656,12 @@ from bloques import *
 import random
 import pygame
 
+
+#---------------------------------------------------------------------------------------------------------------------#
+#------------------------------------------#Creacion del sistema del Juego#-------------------------------------------#
+#---------------------------------------------------------------------------------------------------------------------#
+
+
 class Juego:
 	def __init__(self):
 		self.grid = Grid()  # Crear una nueva grilla
@@ -652,7 +674,7 @@ class Juego:
 		self.sonido_limpiar = pygame.mixer.Sound("musica\clear.ogg")  # Cargar el sonido de limpiar filas
 
 		pygame.mixer.music.load("musica\dtetris99.mp3")  # Cargar la música de fondo
-		pygame.mixer.music.set_volume(0.1)  # Establecer el volumen de la música
+		pygame.mixer.music.set_volume(0)  # Establecer el volumen de la música
 		pygame.mixer.music.play(-1)  # Reproducir la música en bucle
 
 	def actualizar_puntaje(self, lineas_completadas, puntos_movimiento_abajo):
@@ -745,6 +767,11 @@ class Juego:
 		else:
 			self.siguiente_bloque.dibujar(pantalla, 270, 270)
 
+
+#---------------------------------------------------------------------------------------------------------------------#
+#------------------------------------------#Fin Creacion del sistema del Juego#---------------------------------------#
+#---------------------------------------------------------------------------------------------------------------------#
+
 ```
 Importaciones:
 
@@ -797,6 +824,12 @@ En resumen, la clase Posicion proporciona una forma conveniente de representar u
 ``` py
 from bloque import Bloque
 from posicion import Posicion
+
+
+#---------------------------------------------------------------------------------------------------------------------#
+#-----------------------------------------------#Pocisiones de los Bloques#-------------------------------------------#
+#---------------------------------------------------------------------------------------------------------------------#
+
 
 class BloqueL(Bloque):
     def __init__(self):
@@ -884,6 +917,12 @@ class BloqueZ(Bloque):
         }
         self.mover(0, 3)  # Ajustar la posición inicial del bloque
 
+
+
+#---------------------------------------------------------------------------------------------------------------------#
+#--------------------------------------------#Fin Pocisiones de los Bloques#------------------------------------------#
+#---------------------------------------------------------------------------------------------------------------------#
+
 ```
 La clase "Bloque" tiene un constructor y varios métodos para manipular y mover los bloques. La clase base "Bloque" tiene un atributo "id" que representa el identificador del bloque.
 
@@ -902,14 +941,20 @@ from colores import Colores
 import pygame
 from posicion import Posicion
 
+
+#---------------------------------------------------------------------------------------------------------------------#
+#-----------------------------------------------------#Creacion del Bloque#-------------------------------------------#
+#---------------------------------------------------------------------------------------------------------------------#
+
+
 class Bloque:
     def __init__(self, id):
         self.id = id
-        self.celdas = {}
-        self.tam_celda = 30
-        self.despl_fila = 0
-        self.despl_columna = 0
-        self.estado_rotacion = 0
+        self.celdas = {}  # Diccionario para almacenar las posiciones de las celdas del bloque
+        self.tam_celda = 30  # Tamaño de cada celda en píxeles
+        self.despl_fila = 0  # Desplazamiento actual de filas
+        self.despl_columna = 0  # Desplazamiento actual de columnas
+        self.estado_rotacion = 0  # Estado de rotación actual del bloque
         self.colores = Colores.obtener_colores_celda()  # Inicializar los colores para las celdas
 
     def mover(self, filas, columnas):
@@ -945,7 +990,13 @@ class Bloque:
                 self.tam_celda - 1,
                 self.tam_celda - 1
             )
+
             pygame.draw.rect(pantalla, self.colores[self.id], rectangulo_mosaico)  # Dibujar la celda con su color asignado
+
+
+#---------------------------------------------------------------------------------------------------------------------#
+#-----------------------------------------------------#Fin Creacion del Bloque#---------------------------------------#
+#---------------------------------------------------------------------------------------------------------------------#
 
 ```
 Importaciones: Se importan los módulos necesarios para el funcionamiento del código, incluyendo "Colores" y "Posicion". Estos módulos no se proporcionan en el código que has compartido, pero asumiré que contienen las definiciones necesarias para el correcto funcionamiento de la clase "Bloque".
