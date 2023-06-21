@@ -63,7 +63,6 @@ Incluir.
 
 
 ### 🚀ejercutable del proyecto y menus
-``` py
 import pygame
 import sys
 import sqlite3
@@ -139,10 +138,10 @@ ALTO = 620
 ANCHO = 500
 
 #Se carga el video
-video = VideoFileClip("fondomenu.mp4")
-videonombre = VideoFileClip("videonombre.mp4")
-videoPuntuacion = VideoFileClip("menuPuntuacion.mp4")
-videoJuego = VideoFileClip("fondoJuego.mp4")
+video = VideoFileClip("videos\dfondomenu.mp4")
+videonombre = VideoFileClip("videos\dvideonombre.mp4")
+videoPuntuacion = VideoFileClip("videos\dmenuPuntuacion.mp4")
+videoJuego = VideoFileClip("videos\dfondoJuego.mp4")
 
 
 #Rotación de 90 grados en sentido horario
@@ -167,8 +166,8 @@ video_surface = pygame.display.set_mode((ANCHO, ALTO))
 font_titulo = pygame.font.Font("font\dfont.ttf", 25)
 
 # Superficies de texto para mostrar en la pantalla
-superficie_puntaje = font_titulo.render("Puntaje", True, Colores.blanco)
-superficie_siguiente = font_titulo.render("Siguiente", True, Colores.blanco)
+superficie_puntaje = font_titulo.render("Puntaje:", True, Colores.blanco)
+superficie_siguiente = font_titulo.render("Siguiente:", True, Colores.blanco)
 superficie_fin_juego = font_titulo.render("GAME OVER", True, Colores.rojo)
 superficie_opcion_jugar = font_titulo.render("Iniciar juego", True, Colores.gris_oscuro)
 superficie_opcion_puntuaciones = font_titulo.render("Puntuaciones", True, Colores.gris_oscuro)
@@ -178,7 +177,7 @@ opcion_continuar = font_titulo.render("Esp para reiniciar", True, Colores.blanco
 mejor_punt = font_titulo.render("Mejor:", True, Colores.blanco)
 
 # Rectángulos para los elementos en la pantalla
-rect_puntaje = pygame.Rect(330, 55, 150, 60)
+rect_puntaje = pygame.Rect(315, 55, 150, 60)
 rect_siguiente = pygame.Rect(330, 215, 150, 180)
 
 """se define los rectángulos que se utilizarán para dibujar el puntaje y la pieza siguiente en la pantalla."""
@@ -189,10 +188,6 @@ pygame.display.set_caption("Segundo Parcial: Tetris")
 
 """se crea la ventana del juego con el tamaño especificado por las constantes ANCHO y ALTO.
 También se establece el título de la ventana como "Segundo Parcial: Tetris". """
-
-# Cargar y redimensionar el fondo de pantalla
-fondo = pygame.image.load("fondo\dfondo4.png").convert()
-fondo = pygame.transform.scale(fondo, (ANCHO, ALTO))
 
 """En estas líneas se carga la imagen de fondo del juego y se redimensiona para que se ajuste al tamaño de la ventana del juego."""
 
@@ -218,29 +213,23 @@ nombre_jugador = ""
 # Función para mostrar la ventana de ingreso de nombre
 def mostrar_ventana_nombre():
     global nombre_jugador
-    fondo = pygame.image.load("fondo\dnombre1.png").convert()
-    fondo = pygame.transform.scale(fondo, (ANCHO, ALTO))
     nombre_ingresado = False
-
 
     while not nombre_ingresado:
         frame = videonombre.get_frame(pygame.time.get_ticks() / 1000)
         frame = pygame.surfarray.make_surface(frame)
         for evento in pygame.event.get():
             if evento.type == pygame.QUIT:
-                # Si se presiona el botón de cerrar la ventana, se sale del juego
                 pygame.quit()
                 sys.exit()
             if evento.type == pygame.KEYDOWN:
                 if evento.key == pygame.K_RETURN:
-                    # Si se presiona la tecla Enter, se marca que se ingresó un nombre válido
                     nombre_ingresado = True
-            if evento.type == pygame.KEYUP:
-                if evento.key == pygame.K_BACKSPACE:
-                    # Si se suelta la tecla de retroceso, se elimina el último carácter ingresado del nombre del jugador
+                elif evento.key == pygame.K_BACKSPACE:
+                    # Eliminar el último carácter si se presiona Retroceso
                     nombre_jugador = nombre_jugador[:-1]
-                else:
-                    # Si se suelta otra tecla, se agrega su carácter unicode al nombre del jugador
+                elif len(nombre_jugador) < 6:
+                    # Solo agregue el carácter si la longitud del nombre es menor a 6
                     nombre_jugador += evento.unicode
         """
         pygame.QUIT: Se ejecuta cuando se presiona el botón de cerrar la ventana del juego. 
@@ -396,8 +385,10 @@ while True:
             # Verificar otras teclas presionadas si el juego no ha terminado
             elif evento.key == pygame.K_LEFT and juego.fin_juego == False:
                 juego.mover_izquierda()
+                juego.actualizar_puntaje(0, 1)
             elif evento.key == pygame.K_RIGHT and juego.fin_juego == False:
                 juego.mover_derecha()
+                juego.actualizar_puntaje(0, 1)
             elif evento.key == pygame.K_DOWN and juego.fin_juego == False:
                 juego.mover_abajo()
                 juego.actualizar_puntaje(0, 1)
@@ -425,14 +416,14 @@ while True:
 
     # Dibujar el puntaje
     superficie_valor_puntaje = font_titulo.render(str(juego.puntaje), True, Colores.blanco)
-    pantalla.blit(superficie_puntaje, (350, 15, 50, 50))
+    pantalla.blit(superficie_puntaje, (325, 25, 50, 50))
     pantalla.blit(
         superficie_valor_puntaje,
         superficie_valor_puntaje.get_rect(centerx=rect_puntaje.centerx, centery=rect_puntaje.centery),
     )
 
     # Dibujar otros elementos del juego
-    pantalla.blit(superficie_siguiente, (335, 170, 50, 50))
+    pantalla.blit(superficie_siguiente, (325, 180, 50, 50))
     pantalla.blit(mejor_punt, (330, 480, 50, 50))
 
     if juego.fin_juego:
@@ -470,7 +461,6 @@ while True:
 #---------------------------------------------------------------------------------------------------------------------#
 
 
-}
 ```
 ### 🧠Explicacion
 Importaciones:
