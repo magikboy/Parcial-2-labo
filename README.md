@@ -525,7 +525,7 @@ Bucle principal del juego:
 
 ### 🤖Juego en funcionamiento
 
-![JUEGO](https://github.com/magikboy/parcial-1-labo/blob/faea3a0c5b3661aa432da058582056839d88fa45/menu4.PNG)
+![JUEGO](https://github.com/magikboy/Parcial-1-labo/blob/14beb67fc5820d886188c98835f79b62f1b2a438/imagen_2023-06-20_224745425.png)
 
 ### 🧠GRILLA DEL JUEGO
 
