@@ -512,16 +512,16 @@ Bucle principal del juego:
 
 
 ### 🤖Menu principal
-![MENU PRINCIPAL](https://github.com/magikboy/parcial-1-labo/blob/808cd1a859e4195102cf4a7dd3dc5d2a04a5baa1/menu1.PNG)
+![MENU PRINCIPAL](https://github.com/magikboy/Parcial-1-labo/blob/abf4a60c056362d731631c9077461f933d9d2497/menu1.PNG)
 
 
 ### 🤖Menu de scores
 
-![MENU SCORES](https://github.com/magikboy/parcial-1-labo/blob/faea3a0c5b3661aa432da058582056839d88fa45/menu2.PNG)
+![MENU SCORES](https://github.com/magikboy/Parcial-1-labo/blob/abf4a60c056362d731631c9077461f933d9d2497/puntuaciones.PNG)
 
 ### 🤖Menu de ingreso de nombre
 
-![MENU NOMBRE](https://github.com/magikboy/parcial-1-labo/blob/faea3a0c5b3661aa432da058582056839d88fa45/menu3.PNG)
+![MENU NOMBRE](https://github.com/magikboy/Parcial-1-labo/blob/abf4a60c056362d731631c9077461f933d9d2497/menuNombre.PNG)
 
 ### 🤖Juego en funcionamiento
 
