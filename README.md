@@ -63,6 +63,8 @@ Incluir.
 
 
 ### 🚀ejercutable del proyecto y menus
+
+``` py
 import pygame
 import sys
 import sqlite3
