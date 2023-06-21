@@ -1,11 +1,11 @@
 # Parcial-1-labo
 ### 📄Documentación de la Laboratorio - UTN Tecnicatura Superior en Programación.
-
+### **Tetris**
 ### Nombre: Bosco Mascaro Massimo Ariel
 
 ### **Laboratorio**
 
-![TETRIS](https://github.com/magikboy/parcial-1-labo/blob/5feeefcec0e5d43faea89a4e8e41ba442be24bd4/maxresdefault.jpg)
+![TETRIS](https://github.com/magikboy/Parcial-1-labo/blob/a575bf1c85bdb88364910a0004e4315e04bc40c4/pygame.jpg)
 
 ### VIDEOJUEGO TETRIS 🎮
 
